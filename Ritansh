@@ -1,0 +1,26 @@
+
+import streamlit as st
+import numpy as np
+
+# Placeholder values for intercept and coefficients
+intercept = -2.7000887
+coef = np.array([[0.39086313, 0.07248296]])
+
+st.title("Student Placement Predictor")
+
+# Input features
+cgpa = st.slider("CGPA", 6.0, 10.0, 8.0)
+resume_score = st.slider("Resume Score", 0, 100, 80)  # Adjust the range as needed
+
+# Transpose the input array to match dimensions
+input_features = np.array([[resume_score, cgpa]])
+prediction = intercept + np.dot(coef, input_features.T)  # Transpose input_features
+
+# Predict placement probability
+placement_probability = 1 / (1 + np.exp(-prediction))
+
+# Determine placement outcome
+placement_status = "Placed" if placement_probability[0][0] >= 0.5 else "Not Placed"
+
+st.write(f"Placement Probability: {placement_probability[0][0]:.2f}")
+st.write(f"Placement Status: {placement_status}")
